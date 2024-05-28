@@ -1,3 +1,6 @@
+  const tables = require("../../database/tables");
+  
+  /*
   const programs = [
     {
       id: 1,
@@ -19,27 +22,23 @@
       country: "Allemagne",
       year: 2017,
     },
-  ];
+  ]; 
+  */  
   
   // Declare the action
   
-  const browse = (req, res) => {
-    if (req.query.q != null) {
-      const filteredPrograms = programs.filter((program) =>
-        program.synopsis.includes(req.query.q)
-      );
-  
-      res.json(filteredPrograms);
-    } else {
-      res.json(programs);
-    }
+  const browse = async (req, res) => {
+      const programsFromDB = await tables.program.readAll();
+      res.json(programsFromDB);
   };
 
 
-  const read =(req,res) => {
+  const read = async (req,res) => {
+    const programsFromDB = await tables.program.readAll();
     const parsedId = parseInt(req.params.id,10);
 
-    const program=programs.find((p)=> p.id === parsedId);
+
+    const program=programsFromDB.find((p)=> p.id === parsedId);
     if(program !=null) {
       res.json(program);
     } else {
